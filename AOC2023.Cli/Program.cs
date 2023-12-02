@@ -1,4 +1,5 @@
 ﻿using AOC2023;
+using AOC2023.Cli;
 using AOC2023.Contracts;
 using AOC2023.Days;
 using System.Diagnostics;
@@ -30,21 +31,19 @@ if (args != null && args.Length > 0)
     
 
 var dayFromPrompt = PromptUserForDay(days);
-
 if(dayFromPrompt == null)
-{
     throw new ArgumentException("No day selected!");
-}
+var filename = PromptUserForFile(dayFromPrompt);
 
-ExecuteDay(dayFromPrompt);
+ExecuteDay(dayFromPrompt, filename);
 
-void ExecuteDay(DayBase selected)
+void ExecuteDay(DayBase selected, string filename = "input.txt")
 {
     Console.WriteLine($"Day {selected.DayNumber:00}: {selected.Name}".Bordered());
     // Create stopwatch sw and start
     var sw = new Stopwatch();
     sw.Start();
-    var input = selected.GenerateInput();
+    var input = selected.GenerateInput(filename);
     if (input == null)
     {
         Console.WriteLine("No input generated!");
@@ -60,21 +59,32 @@ void ExecuteDay(DayBase selected)
     Console.WriteLine($"EXEC  TIME: {sw.Elapsed.TotalMilliseconds:00.00}ms");
 }
 
+string PromptUserForFile(DayBase day)
+{
+    Console.WriteLine("SELECT FILE".Bordered());
+    int i = 0;
+    var files = day.GetAvailableFiles().ToList();
+    foreach (var f in files)
+    {
+        Console.WriteLine($"[{++i}] {f}");
+    }
+    Console.WriteLine(string.Empty.Bordered());
+    var fileIndex = ConsoleUtils.ReadInt(val => val > 0 && val <= files.Count, files.FindIndex(str => str == "input.txt")+1);
+    return day.GetAvailableFiles().ElementAt(fileIndex - 1);
+}
+
 DayBase? PromptUserForDay(List<DayBase> days)
 {
     Console.WriteLine("SELECT DAY".Bordered());
     foreach (var d in days)
-    {
-        Console.WriteLine($"[{d.DayNumber:00}] {d.Name}");
-    }
+        Console.WriteLine($"[{d.DayNumber:00}] {d.Name,15} ({d.GetAvailableFiles().Count()} input files available)");
 
     Console.WriteLine(string.Empty.Bordered());
-    Console.Write("=> ");
-    var selectedDay = int.Parse(Console.ReadLine() ?? string.Empty);
+    var selectedDay = ConsoleUtils.ReadInt(val => days.Any(d => d.DayNumber == val));
     return SelectDayFromNumber(selectedDay);
 }
 
 DayBase? SelectDayFromNumber(int selectedDay)
 {
-    return days.Where(d => d.DayNumber == selectedDay).FirstOrDefault();
+    return days.FirstOrDefault(d => d.DayNumber == selectedDay);
 }

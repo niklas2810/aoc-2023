@@ -6,8 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PublishAot>true</PublishAot>
-		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-		<TargetName>aoc2023</TargetName>
+		<AssemblyName>aoc2023</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
