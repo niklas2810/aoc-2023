@@ -1,0 +1,35 @@
+# Deploy to GitHub Pages using WebAssembly
+name: Deploy to GitHub Pages
+
+on:
+    push:
+      branches: [ "main" ]
+    workflow_dispatch:
+
+env:
+    DOTNET_VERSION: 8.0.x
+
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+  
+jobs:
+    deploy-to-pages:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: ${{ env.DOTNET_VERSION }}
+        - name: Setup additional workloads
+          run: dotnet workload install wasm-tools
+        - name: Restore dependencies
+          run: dotnet restore
+        - name: Build 
+          run: dotnet publish AOC2023.WebApp --no-restore -c Release -o deploy --nologo 
+        - name: Deploy
+          uses: actions/upload-pages-artifact@v2
+          with:
+            path: "deploy/wwwroot" 

@@ -25,9 +25,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build Native
-      run: dotnet publish --no-restore
+      run: dotnet publish AOC2023 --no-restore -c Release -o deploy --nologo
     - name: Pack TAR with build
-      run: tar -czvf linux-build.tar.gz -C AOC2023/bin/Release/net8.0/linux-x64/publish .
+      run: tar -czvf linux-build.tar.gz -C deploy .
     - uses: actions/upload-artifact@v3
       with:
         name: linux-build
@@ -49,25 +49,6 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-
-  deploy-to-pages:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Setup additional workloads
-      run: dotnet workload install wasm-tools
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build 
-      run: dotnet publish AOC2023.WebApp --no-restore -c Release -o deploy --nologo 
-    - name: Deploy
-      uses: actions/upload-pages-artifact@v2
-      with:
-        path: "deploy/wwwroot" 
       
   native-all:
     runs-on: ubuntu-latest
