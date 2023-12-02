@@ -26,7 +26,7 @@ Console.WriteLine($"PART  ONE: {partOne}");
 Console.WriteLine($"PART  TWO: {partTwo}");
 
 // Write elapsed milliseconds with 2 digits precision based on sw.Elapsed.TotalNanoseconds
-Console.WriteLine($"ELAPSED: {sw.Elapsed.TotalMilliseconds:00.00} ms");
+Console.WriteLine($"EXEC TIME: {sw.Elapsed.TotalMilliseconds:00.00}ms");
 
 DayBase? SelectDay(List<DayBase> days)
 {
