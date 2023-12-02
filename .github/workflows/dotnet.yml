@@ -15,7 +15,27 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build Release
+      run: dotnet build --no-restore -c Release
+    - name: Pack TAR with build
+      run: tar -czvf linux-build.tar.gz AOC2023/bin/Release/net8.0
+    - uses: actions/upload-artifact@v3
+      with:
+        name: linux-build
+        path: linux-build.tar.gz
 
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -28,15 +48,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Build Release
-      run: dotnet build --no-restore -c Release
-    - name: Pack TAR with build
-      run: tar -czvf linux-build.tar.gz AOC2023/bin/Release/net8.0
-    - uses: actions/upload-artifact@v3
-      with:
-        name: linux-build
-        path: linux-build.tar.gz
-
+      
   execute-days:
     runs-on: ubuntu-latest
     needs: build
