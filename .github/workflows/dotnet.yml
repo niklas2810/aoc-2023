@@ -19,6 +19,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Setup additional workloads
+      run: dotnet workload install wasm-tools
     - name: Restore dependencies
       run: dotnet restore
     - name: Build Native
@@ -38,6 +40,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Setup additional workloads
+      run: dotnet workload install wasm-tools
     - name: Restore dependencies
       run: dotnet restore
     - name: Build Debug
@@ -47,13 +51,14 @@ jobs:
 
   deploy-to-pages:
     runs-on: ubuntu-latest
-    needs: test
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Setup additional workloads
+      run: dotnet workload install wasm-tools
     - name: Restore dependencies
       run: dotnet restore
     - name: Build 
@@ -68,10 +73,6 @@ jobs:
     needs: build-native
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
     - uses: actions/download-artifact@v3
       with:
         name: linux-build
@@ -90,10 +91,6 @@ jobs:
         day: [1, 2]
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
     - uses: actions/download-artifact@v3
       with:
         name: linux-build
