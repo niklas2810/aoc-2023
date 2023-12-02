@@ -30,10 +30,12 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Build Release
       run: dotnet build --no-restore -c Release
+    - name: Pack TAR with build
+      run: tar -czvf linux-build.tar.gz AOC2023/bin/Release/net8.0
     - uses: actions/upload-artifact@v3
       with:
         name: linux-build
-        path: AOC2023/bin/Release/net8.0
+        path: linux-build.tar.gz
 
   execute-days:
     runs-on: ubuntu-latest
@@ -50,7 +52,9 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: linux-build
-        path: runtime
+        path: linux-build.tar.gz
+    - name: Extract build
+      run: tar -xzvf linux-build.tar.gz -C runtime
     - name: List artifact content
       run: ls -Rlah runtime
     - name: Execute
