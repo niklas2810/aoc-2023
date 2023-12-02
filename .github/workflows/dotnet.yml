@@ -48,6 +48,6 @@ jobs:
       run: dotnet build --no-restore
     - name: Execute
       # Run project AOC2023 with command line parameter of matrix
-      run: dotnet run --project AOC2023 -- ${{ matrix.day }}
+      run: cd AAOC2023 && dotnet run -- ${{ matrix.day }}
 
     
