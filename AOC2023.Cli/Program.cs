@@ -1,11 +1,16 @@
 ﻿using AOC2023;
 using AOC2023.Cli;
-using AOC2023.Contracts;
-using AOC2023.Days;
+using AOC2023.Logic;
 using System.Diagnostics;
 
-var days = new List<DayBase> { new Day01(), new Day02() };
+if(!Directory.Exists("Inputs"))
+{
+    Console.WriteLine($"Directory does not exist: {Path.GetFullPath("Inputs")}");
+    Console.WriteLine("Please place your input files in the Inputs folder and restart.");
+    return;
+}
 
+var days = DayRegistry.GetDays().ToList();
 if (args != null && args.Length > 0)
 {
     var runMode = args[0].ToString();
@@ -33,6 +38,8 @@ if (args != null && args.Length > 0)
 var dayFromPrompt = PromptUserForDay(days);
 if(dayFromPrompt == null)
     throw new ArgumentException("No day selected!");
+if(dayFromPrompt.GetAvailableFiles().Count() == 0)
+    throw new ArgumentException($"No input files found for day {dayFromPrompt.DayNumber}!");
 var filename = PromptUserForFile(dayFromPrompt);
 
 ExecuteDay(dayFromPrompt, filename);
