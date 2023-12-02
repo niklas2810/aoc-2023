@@ -32,9 +32,9 @@ jobs:
         - name: Setup additional workloads
           run: dotnet workload install wasm-tools
         - name: Restore dependencies
-          run: dotnet restore
+          run: dotnet restore src/apps/AOC2023.WebApp
         - name: Build 
-          run: dotnet publish AOC2023.WebApp --no-restore -c Release -o deploy --nologo 
+          run: dotnet publish src/apps/AOC2023.WebApp --no-restore -c Release -o deploy --nologo 
         - name: Upload web application
           uses: actions/upload-pages-artifact@v2
           with:

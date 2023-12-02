@@ -21,9 +21,9 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore dependencies
-      run: dotnet restore AOC2023.Cli
+      run: dotnet restore src/apps/AOC2023.Cli
     - name: Build CLI
-      run: dotnet publish AOC2023.Cli --no-restore -c Release -o deploy --nologo
+      run: dotnet publish src/apps/AOC2023.Cli --no-restore -c Release -o deploy --nologo
     - name: Pack TAR with build
       run: tar -czvf linux-build.tar.gz -C deploy .
     - uses: actions/upload-artifact@v3
@@ -40,9 +40,9 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore dependencies
-      run: dotnet restore AOC2023.Tests
+      run: dotnet restore tests/AOC2023.Tests
     - name: Build Debug
-      run: dotnet build AOC2023.Tests --no-restore
+      run: dotnet build tests/AOC2023.Tests --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
