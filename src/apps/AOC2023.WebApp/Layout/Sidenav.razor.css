@@ -44,7 +44,16 @@ nav.closed-on-mobile .nav-item {
     display: none;
 }
 
+nav .not-on-mobile {
+    display: none;
+}
+
 @media (min-width: 992px) {
+
+    nav .not-on-mobile {
+        display: block;
+    }
+
     nav.closed-on-mobile .nav-item {
         display: block;
     }
