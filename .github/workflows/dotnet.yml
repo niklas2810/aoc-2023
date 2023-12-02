@@ -20,10 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Setup additional workloads
-      run: dotnet workload install wasm-tools
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore AOC2023
     - name: Build Native
       run: dotnet publish AOC2023 --no-restore -c Release -o deploy --nologo
     - name: Pack TAR with build
@@ -41,12 +39,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Setup additional workloads
-      run: dotnet workload install wasm-tools
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore AOC2023.Tests
     - name: Build Debug
-      run: dotnet build --no-restore
+      run: dotnet build AOC2023.Tests --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
