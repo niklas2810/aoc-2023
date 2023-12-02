@@ -24,27 +24,34 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build Debug
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-  
+    - name: Build Release
+      run: dotnet build --no-restore -c Release
+    - uses: actions/upload-artifact@v3
+      with:
+        name: linux-build
+        path: AOC2023/bin/Release/net8.0
+
   execute-days:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         day: [1, 2]
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+    - uses: actions/download-artifact@v3
+      with:
+        name: linux-build
+        path: runtime
+    - name: List artifact content
+      run: ls -Rlah runtime
     - name: Execute
-      run: cd AOC2023 && dotnet run --no-build -- ${{ matrix.day }}
+      working-directory: runtime
+      run: ./AOC2023 ${{ matrix.day }}
