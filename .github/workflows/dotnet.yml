@@ -52,7 +52,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: linux-build
-        path: linux-build.tar.gz
+        path: .
     - name: Extract build
       run: tar -xzvf linux-build.tar.gz -C runtime
     - name: List artifact content
