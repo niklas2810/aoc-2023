@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Prompt User": {
+      "commandName": "Project"
+    },
+    "Example Day": {
+      "commandName": "Project",
+      "commandLineArgs": "1"
+    },
+    "Execute All": {
+      "commandName": "Project",
+      "commandLineArgs": "all"
+    }
+  }
+}

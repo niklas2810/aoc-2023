@@ -32,7 +32,6 @@ jobs:
         name: linux-build
         path: linux-build.tar.gz
 
-
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -49,7 +48,26 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
-  execute-days:
+  execute-all:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - uses: actions/download-artifact@v3
+      with:
+        name: linux-build
+        path: .
+    - name: Extract build
+      run: mkdir runtime && tar -xzvf linux-build.tar.gz -C runtime
+    - name: Execute
+      working-directory: runtime
+      run: ./AOC2023 all
+
+  execute-single:
     runs-on: ubuntu-latest
     needs: build
     strategy:
@@ -67,8 +85,6 @@ jobs:
         path: .
     - name: Extract build
       run: mkdir runtime && tar -xzvf linux-build.tar.gz -C runtime
-    - name: List artifact content
-      run: ls -Rlah runtime
     - name: Execute
       working-directory: runtime
       run: ./AOC2023 ${{ matrix.day }}
