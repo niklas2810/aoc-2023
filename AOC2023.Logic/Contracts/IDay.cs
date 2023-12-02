@@ -1,4 +1,4 @@
-﻿namespace AOC2023.Contracts;
+﻿namespace AOC2023.Logic.Contracts;
 
 interface IDay<TIn, TOut>
 {

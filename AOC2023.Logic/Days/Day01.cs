@@ -1,7 +1,6 @@
 ﻿using System.Text;
-using AOC2023.Contracts;
 
-namespace AOC2023.Days;
+namespace AOC2023.Logic.Days;
 
 public class Day01 : DayBase
 {
@@ -24,7 +23,7 @@ public class Day01 : DayBase
 
     public override IEnumerable<string> GenerateInput(params object[] args)
     {
-        return (args.Length > 0 && args[0] is string p) ? this.ReadFile(p) : this.ReadFile();
+        return args.Length > 0 && args[0] is string p ? ReadFile(p) : ReadFile();
     }
 
     public override long SolvePartOne(IEnumerable<string> input)
@@ -48,7 +47,7 @@ public class Day01 : DayBase
             //find first and list digit in line
             var first = filtered.FirstOrDefault(char.IsDigit) - '0';
             var last = filtered.LastOrDefault(char.IsDigit) - '0';
-            sums.Add(first*10 + last);
+            sums.Add(first * 10 + last);
         }
         return sums.Sum();
     }
@@ -66,7 +65,7 @@ public class Day01 : DayBase
             }
             else
             {
-                foreach(var (name, digit) in DigitNames)
+                foreach (var (name, digit) in DigitNames)
                 {
                     if (line[i..].StartsWith(name))
                     {

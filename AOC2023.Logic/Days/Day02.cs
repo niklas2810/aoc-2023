@@ -1,6 +1,4 @@
-﻿using AOC2023.Contracts;
-
-namespace AOC2023.Days;
+﻿namespace AOC2023.Logic.Days;
 
 public class Day02 : DayBase
 {
@@ -9,7 +7,7 @@ public class Day02 : DayBase
 
     public override IEnumerable<string> GenerateInput(params object[] args)
     {
-        return (args.Length > 0 && args[0] is string p) ? this.ReadFile(p) : this.ReadFile();
+        return args.Length > 0 && args[0] is string p ? ReadFile(p) : ReadFile();
     }
 
     public IEnumerable<Game> ParseInput(IEnumerable<string> input)
@@ -21,19 +19,19 @@ public class Day02 : DayBase
     // Input example: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
     private Game ParseGame(string input)
     {
-        var gameName = int.Parse(input.Substring(5, input.IndexOf(':')-5));
+        var gameName = int.Parse(input.Substring(5, input.IndexOf(':') - 5));
         var result = new Game(gameName);
 
         var parts = input.Substring(input.IndexOf(':') + 1).Split(';').Select(s => s.Trim());
-        foreach(var part in parts)
+        foreach (var part in parts)
         {
             var subset = new Subset();
             var colors = part.Split(',').Select(s => s.Trim());
-            foreach(var color in colors)
+            foreach (var color in colors)
             {
                 var number = int.Parse(color.Split(' ')[0]);
                 var name = color.Split(' ')[1];
-                switch(name)
+                switch (name)
                 {
                     case "red":
                         subset.Red = number;

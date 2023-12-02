@@ -1,10 +1,6 @@
-﻿using AOC2023.Contracts;
-using AOC2023.Days;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AOC2023.Logic;
+using AOC2023.Logic.Days;
+
 
 namespace AOC2023.Tests
 {

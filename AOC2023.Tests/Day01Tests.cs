@@ -1,4 +1,4 @@
-using AOC2023.Days;
+using AOC2023.Logic.Days;
 
 namespace AOC2023.Tests
 {
