@@ -1,16 +1,15 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div id="app">
+	<Header />
+	<main class="container">
+		<Sidenav />
+		<!--<div class="top-row px-4">
+			<a title="Source on GitHub" class="ti ti-brand-github-filled" target="_blank" href="https://github.com/niklas2810/aoc-2023"></a>
+		</div>-->
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+		<div role="document">
+			@Body
+		</div>
+	</main>
+	<ThemeSwitcher />
 </div>

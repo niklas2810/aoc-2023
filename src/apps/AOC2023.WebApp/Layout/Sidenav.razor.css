@@ -1,0 +1,87 @@
+/**
+ * Docs: Aside
+ */
+nav {
+    width: 100%;
+    padding-bottom: var(--block-spacing-vertical);
+}
+
+@media (min-width: 992px) {
+    nav {
+        position: fixed;
+        width: 200px;
+        max-height: calc(100vh - 5.5rem);
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}
+
+nav a#toggle-docs-navigation {
+    display: block;
+    margin: 0;
+    margin-bottom: var(--spacing);
+    padding: 0;
+    padding-bottom: var(--spacing);
+    border-bottom: var(--border-width) solid var(--accordion-border-color);
+}
+
+    nav a#toggle-docs-navigation svg {
+        margin-right: calc(var(--spacing) * 0.5);
+        vertical-align: -3px;
+    }
+
+@media (min-width: 992px) {
+    nav a#toggle-docs-navigation {
+        display: none;
+    }
+}
+
+nav.closed-on-mobile a#toggle-docs-navigation svg.collapse {
+    display: none;
+}
+
+nav.closed-on-mobile .nav-item {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    nav.closed-on-mobile .nav-item {
+        display: block;
+    }
+
+    nav.closed-on-mobile > a#toggle-docs-navigation {
+        display: none;
+    }
+}
+
+nav.open a#toggle-docs-navigation svg.expand {
+    display: none;
+}
+
+
+ul {
+    padding-left: 0.25rem;
+}
+
+li a {
+    --nav-link-spacing-vertical: 0.25rem;
+    --nav-link-spacing-horizontal: 0.75rem;
+}
+
+    li a svg {
+        vertical-align: middle;
+    }
+
+a.secondary:focus {
+    background-color: transparent;
+    color: var(--primary-hover);
+}
+
+a[aria-current],
+a[aria-current]:hover {
+    color: var(--primary);
+}
+
+.nav-item {
+    border-bottom: none;
+}

@@ -1,0 +1,33 @@
+﻿@page "/executor"
+@using AOC2023.Logic
+
+<PageTitle>AOC2023 - Execution</PageTitle>
+
+<section id="executor">
+	<hgroup>
+		<h1>Solution Executer</h1>
+		<h2>👇 Follow the instructions below 👇</h2>
+	</hgroup>
+
+	<p>This is a Blazor WebAssembly application, compiled from C# code. This means that the source code for this app is just the same as in the CLI!</p>
+
+	<h3>Step 1️⃣: Puzzle Selection</h3>
+
+	<p>First off, select a solution which you want to execute. Don't worry about the input for now, you can configure it in the following steps.</p>
+	<article>
+		<h5>Selected Puzzle</h5>
+		<select>
+			<option disabled selected="true" value="">---</option>
+			@foreach (var day in days)
+			{
+					<option value="@day.DayNumber">Day @day.DayNumber: @day.Name</option>
+			}
+		</select>
+	</article>
+</section>
+
+@code {
+
+	private List<DayBase> days = DayRegistry.GetDays().ToList();
+
+}
