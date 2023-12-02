@@ -23,10 +23,10 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build Release
-      run: dotnet build --no-restore -c Release
+    - name: Build Native
+      run: dotnet publish --no-restore
     - name: Pack TAR with build
-      run: tar -czvf linux-build.tar.gz -C AOC2023/bin/Release/net8.0 .
+      run: tar -czvf linux-build.tar.gz -C AOC2023/bin/Release/net8.0/linux-x64/publish .
     - uses: actions/upload-artifact@v3
       with:
         name: linux-build
