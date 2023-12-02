@@ -3,7 +3,7 @@ using AOC2023.Contracts;
 
 namespace AOC2023.Days;
 
-public class Day01 : DayBase<IEnumerable<string>, int>
+public class Day01 : DayBase
 {
     public override string Name => "Trebuchet?!";
 
@@ -27,7 +27,7 @@ public class Day01 : DayBase<IEnumerable<string>, int>
         return (args.Length > 0 && args[0] is string p) ? this.ReadFile(p) : this.ReadFile();
     }
 
-    public override int SolvePartOne(IEnumerable<string> input)
+    public override long SolvePartOne(IEnumerable<string> input)
     {
         var sums = new List<int>();
         foreach (var line in input)
@@ -39,7 +39,7 @@ public class Day01 : DayBase<IEnumerable<string>, int>
         return sums.Sum();
     }
 
-    public override int SolvePartTwo(IEnumerable<string> input)
+    public override long SolvePartTwo(IEnumerable<string> input)
     {
         var sums = new List<int>();
         foreach (var line in input)

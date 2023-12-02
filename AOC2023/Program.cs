@@ -1,7 +1,7 @@
 ﻿using AOC2023.Contracts;
 using AOC2023.Days;
 
-var days = new List<IDay> { new Day01(), new Day02() };
+var days = new List<DayBase> { new Day01(), new Day02() };
 
 var selected = SelectDay(days);
 
@@ -22,7 +22,7 @@ var partTwo = selected.SolvePartTwo(input);
 Console.WriteLine($"PART ONE: {partOne}");
 Console.WriteLine($"PART TWO: {partTwo}");
 
-dynamic? SelectDay(List<IDay> days)
+DayBase? SelectDay(List<DayBase> days)
 {
     if(args != null && args.Length > 0)
         return SelectDayFromNumber(int.Parse(args[0]));
@@ -38,7 +38,7 @@ dynamic? SelectDay(List<IDay> days)
     return SelectDayFromNumber(selectedDay);
 }
 
-dynamic? SelectDayFromNumber(int selectedDay)
+DayBase? SelectDayFromNumber(int selectedDay)
 {
     return days.Where(d => d.DayNumber == selectedDay).FirstOrDefault();
 }
