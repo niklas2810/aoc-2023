@@ -11,8 +11,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AOC2023.Files\AOC2023.Files.csproj" />
-		<ProjectReference Include="..\AOC2023.Logic\AOC2023.Logic.csproj" />
+		<ProjectReference Include="..\..\libs\AOC2023.Files\AOC2023.Files.csproj" />
+		<ProjectReference Include="..\..\libs\AOC2023.Logic\AOC2023.Logic.csproj" />
 	</ItemGroup>
 
 </Project>
