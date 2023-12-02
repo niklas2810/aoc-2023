@@ -1,6 +1,6 @@
 ﻿namespace AOC2023.Days;
 
-internal class Day02 : IDay<IEnumerable<Game>, int>
+public class Day02 : IDay<IEnumerable<Game>, int>
 {
     public string Name => "Cube Conundrum";
 
@@ -63,7 +63,7 @@ internal class Day02 : IDay<IEnumerable<Game>, int>
     }
 }
 
-class Game
+public class Game
 {
     public Game(int id)
     {
@@ -80,7 +80,7 @@ class Game
     public int MaxBlue => Subsets.Max(s => s.Blue);
 }
 
-class Subset
+public class Subset
 {
     public int Red { get; set; }
     public int Green { get; set; }

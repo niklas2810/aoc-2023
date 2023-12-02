@@ -2,7 +2,7 @@
 
 namespace AOC2023.Days;
 
-internal class Day01 : IDay<IEnumerable<string>, int>
+public class Day01 : IDay<IEnumerable<string>, int>
 {
     public string Name => "Trebuchet?!";
 
