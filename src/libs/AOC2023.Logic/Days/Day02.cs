@@ -49,30 +49,30 @@ public class Day02 : DayBase
         return result;
     }
 
-    public override long SolvePartOne(IEnumerable<string> input)
+    public override Task<long> SolvePartOne(IEnumerable<string> input)
     {
         const int MaxRed = 12;
         const int MaxGreen = 13;
         const int MaxBlue = 14;
 
-        return ParseInput(input).Where(game => game.MaxRed <= MaxRed && game.MaxGreen <= MaxGreen && game.MaxBlue <= MaxBlue).Sum(game => game.Id);
+        return Task.FromResult(ParseInput(input).Where(game => game.MaxRed <= MaxRed && game.MaxGreen <= MaxGreen && game.MaxBlue <= MaxBlue).Sum(game => game.Id));
     }
 
 
-    public override long SolvePartTwo(IEnumerable<string> input)
+    public override Task<long> SolvePartTwo(IEnumerable<string> input)
     {
-        return ParseInput(input).Sum(game => game.MaxRed * game.MaxGreen * game.MaxBlue);
+        return Task.FromResult(ParseInput(input).Sum(game => (long)game.MaxRed * game.MaxGreen * game.MaxBlue));
     }
 }
 
 public class Game
 {
-    public Game(int id)
+    public Game(long id)
     {
         Id = id;
     }
 
-    public int Id { get; }
+    public long Id { get; }
     public List<Subset> Subsets { get; } = [];
 
     public int MaxRed => Subsets.Max(s => s.Red);

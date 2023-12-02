@@ -19,14 +19,14 @@ if (args != null && args.Length > 0)
         var sw = new Stopwatch();
         sw.Start();
         foreach(var d in days)
-            ExecuteDay(d);
+            await ExecuteDay(d);
         Console.WriteLine(string.Empty.Bordered());
         Console.WriteLine($"TOTAL TIME: {sw.Elapsed.TotalMilliseconds:00.00}ms");
 
     } else if(int.TryParse(runMode, out int dayNumber))
     {
         var dayFromArgs = SelectDayFromNumber(dayNumber) ?? throw new ArgumentException($"Day {dayNumber} not found!");
-        ExecuteDay(dayFromArgs);
+        await ExecuteDay(dayFromArgs);
     } else
     {
         Console.WriteLine($"Invalid arguments: '{args}'");
@@ -42,9 +42,9 @@ if(dayFromPrompt.GetAvailableFiles().Count() == 0)
     throw new ArgumentException($"No input files found for day {dayFromPrompt.DayNumber}!");
 var filename = PromptUserForFile(dayFromPrompt);
 
-ExecuteDay(dayFromPrompt, filename);
+await ExecuteDay(dayFromPrompt, filename);
 
-void ExecuteDay(DayBase selected, string filename = "input.txt")
+async Task ExecuteDay(DayBase selected, string filename = "input.txt")
 {
     Console.WriteLine($"Day {selected.DayNumber:00}: {selected.Name}".Bordered());
     // Create stopwatch sw and start
@@ -56,8 +56,8 @@ void ExecuteDay(DayBase selected, string filename = "input.txt")
         Console.WriteLine("No input generated!");
         return;
     }
-    var partOne = selected.SolvePartOne(input);
-    var partTwo = selected.SolvePartTwo(input);
+    long partOne = await selected.SolvePartOne(input);
+    long partTwo = await selected.SolvePartTwo(input);
 
     Console.WriteLine($"PART   ONE: {partOne}");
     Console.WriteLine($"PART   TWO: {partTwo}");

@@ -56,30 +56,30 @@ namespace AOC2023.Tests
         }
 
         [TestMethod]
-        public void TestSolvePartOneExample()
+        public async Task TestSolvePartOneExample()
         {
-            var result = _day.SolvePartOne(_day.GenerateInput("example.txt"));
+            var result = await _day.SolvePartOne(_day.GenerateInput("example.txt"));
             Assert.AreEqual(142, result);
         }
 
         [TestMethod]
-        public void TestSolvePartTwoExample()
+        public async Task TestSolvePartTwoExample()
         {
-            var result = _day.SolvePartTwo(_day.GenerateInput("example2.txt"));
+            var result = await _day.SolvePartTwo(_day.GenerateInput("example2.txt"));
             Assert.AreEqual(281, result);
         }
 
         [TestMethod]
-        public void TestSolvePartOneActual()
+        public async Task TestSolvePartOneActual()
         {
-            var result = _day.SolvePartOne(_day.GenerateInput());
+            var result = await _day.SolvePartOne(_day.GenerateInput());
             Assert.AreEqual(53651, result);
         }
 
         [TestMethod]
-        public void TestSolvePartTwoActual()
+        public async Task TestSolvePartTwoActual()
         {
-            var result = _day.SolvePartTwo(_day.GenerateInput());
+            var result = await _day.SolvePartTwo(_day.GenerateInput());
             Assert.AreEqual(53894, result);
         }
         

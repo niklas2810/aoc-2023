@@ -26,30 +26,34 @@ public class Day01 : DayBase
         return args.Length > 0 && args[0] is string p ? ReadFile(p) : ReadFile();
     }
 
-    public override long SolvePartOne(IEnumerable<string> input)
+    public override Task<long> SolvePartOne(IEnumerable<string> input)
     {
-        var sums = new List<int>();
+        var sums = new List<long>();
         foreach (var line in input)
         {
             var all = line.Where(c => c >= '0' && c <= '9').Select(c => c - '0').ToArray();
-            var s = all[0] * 10 + all[all.Count() - 1];
+
+            if(all.Count() == 0)
+                throw new ArgumentException("Illegal line (must contain a digit): " + line);
+
+            var s = all.First() * 10 + all.Last();
             sums.Add(s);
         }
-        return sums.Sum();
+        return Task.FromResult(sums.Sum());
     }
 
-    public override long SolvePartTwo(IEnumerable<string> input)
+    public override Task<long> SolvePartTwo(IEnumerable<string> input)
     {
-        var sums = new List<int>();
+        var sums = new List<long>();
         foreach (var line in input)
         {
             var filtered = Convert(line);
             //find first and list digit in line
-            var first = filtered.FirstOrDefault(char.IsDigit) - '0';
-            var last = filtered.LastOrDefault(char.IsDigit) - '0';
+            var first = filtered.First(char.IsDigit) - '0';
+            var last = filtered.Last(char.IsDigit) - '0';
             sums.Add(first * 10 + last);
         }
-        return sums.Sum();
+        return Task.FromResult(sums.Sum());
     }
 
     private static string Convert(string line)

@@ -7,6 +7,6 @@ interface IDay<TIn, TOut>
     public int DayNumber { get; }
 
     public abstract TIn GenerateInput(params object[] args);
-    public abstract TOut SolvePartOne(TIn input);
-    public abstract TOut SolvePartTwo(TIn input);
+    public abstract Task<TOut> SolvePartOne(TIn input);
+    public abstract Task<TOut> SolvePartTwo(TIn input);
 }

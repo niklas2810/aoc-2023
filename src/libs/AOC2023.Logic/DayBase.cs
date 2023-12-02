@@ -33,6 +33,6 @@ public abstract class DayBase : IDay<IEnumerable<string>, long>
     }
 
     public abstract IEnumerable<string> GenerateInput(params object[] args);
-    public abstract long SolvePartOne(IEnumerable<string> input);
-    public abstract long SolvePartTwo(IEnumerable<string> input);
+    public abstract Task<long> SolvePartOne(IEnumerable<string> input);
+    public abstract Task<long> SolvePartTwo(IEnumerable<string> input);
 }

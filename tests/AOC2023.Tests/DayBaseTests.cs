@@ -37,12 +37,12 @@ namespace AOC2023.Tests
             throw new NotImplementedException();
         }
 
-        public override long SolvePartOne(IEnumerable<string> input)
+        public override Task<long> SolvePartOne(IEnumerable<string> input)
         {
             throw new NotImplementedException();
         }
 
-        public override long SolvePartTwo(IEnumerable<string> input)
+        public override Task<long> SolvePartTwo(IEnumerable<string> input)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,8 @@
 ﻿@page "/executor"
 @using AOC2023.Logic
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject HttpClient Http
 
 <PageTitle>AOC2023 - Execution</PageTitle>
 
@@ -16,18 +19,188 @@
 	<p>First off, select a solution which you want to execute. Don't worry about the input for now, you can configure it in the following steps.</p>
 	<article>
 		<h5>Selected Puzzle</h5>
-		<select>
+		<select @onchange="OnDayChanged">
 			<option disabled selected="true" value="">---</option>
 			@foreach (var day in days)
 			{
-					<option value="@day.DayNumber">Day @day.DayNumber: @day.Name</option>
+									<option value="@day.DayNumber">Day @day.DayNumber: @day.Name</option>
 			}
 		</select>
+	</article>
+
+	<h3>Step 2️⃣: Configure Input</h3>
+	<p>Select an input file which you want to use to run the test.</p>
+	<article>
+		<h5>Selected Input</h5>
+		<p>You have to select a puzzle first.</p>
+		<select @onchange="OnInputChanged">
+			<option disabled selected="true" value="@string.Empty">---</option>
+			@foreach (var file in files)
+			{
+									<option value="@file.Key">@file.Key</option>
+			}
+		</select>
+		<button disabled="@string.IsNullOrWhiteSpace(selectedFile)" aria-busy="@ShowLoading" @onclick="LoadInputFile">Load File</button>
+		<p>Status: @InputStatusMessage</p>
+	</article>
+
+	<h3>Step 3️⃣: Solve Puzzle</h3>
+	<p>Click the button below to run the solution for the selected puzzle and input.</p>
+	<article>
+		<h5>Run Solution</h5>
+
+		<p>Part  One: @solutionPartOne</p>
+		<p>Part  Two: @solutionPartTwo</p>
+		<p>Exec Time: @solutionTime ms</p>
+
+		<button disabled="@DisableSolveButton" aria-busy="@ShowExecuting" @onclick="RunPuzzle">Run Solution</button>
 	</article>
 </section>
 
 @code {
 
-	private List<DayBase> days = DayRegistry.GetDays().ToList();
+	const string baseUrl = "https://api.github.com/repos/niklas2810/aoc-2023/contents/src/libs/AOC2023.Files/Inputs";
 
+	const string resetString = "???";
+
+	bool loading = false;
+	bool executing = false;
+
+	string ShowLoading => loading.ToString().ToLowerInvariant();
+	string ShowExecuting => executing.ToString().ToLowerInvariant();
+
+	DayBase? selectedDay = null;
+	string selectedFile = string.Empty;
+
+	IEnumerable<string>? loadedInput = null;
+
+	string solutionPartOne = resetString;
+	string solutionPartTwo = resetString;
+	string solutionTime = resetString;
+
+	private List<DayBase> days = DayRegistry.GetDays().ToList();
+	private Dictionary<string, string> files = new Dictionary<string, string>();
+
+	private bool DisableSolveButton => string.IsNullOrWhiteSpace(selectedFile) || loadedInput == null || loadedInput.Count() == 0;
+
+	private string InputStatusMessage
+	{
+		get
+		{
+			if (string.IsNullOrWhiteSpace(selectedFile))
+				return "No file selected";
+			if (loadedInput == null || loadedInput.Count() == 0)
+				return "Not loaded";
+			return $"Loaded {loadedInput.Count()} lines";
+		}
+	}
+
+	private async Task GetFilesForDay(DayBase day)
+	{
+		loading = true;
+		Console.WriteLine("getting files");
+		var folderUrl = $"{baseUrl}/{day.DayNumber:00}";
+
+		var response = await Http.GetStringAsync(folderUrl);
+		// Parse response as JSON as generic object using System.Text.Json
+		var data = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(response);
+		if (data == null)
+		{
+			Console.WriteLine("data is null");
+			return;
+		}
+
+		foreach (var entry in data)
+		{
+			if (entry.ContainsKey("name") && entry.ContainsKey("download_url"))
+				files.Add(entry["name"].ToString() ?? "INVALID", entry["download_url"].ToString() ?? "INVALID");
+		}
+		Console.WriteLine($"Current puzzle has {files.Count} files on GitHub!");
+		loading = false;
+	}
+
+	private async Task OnDayChanged(ChangeEventArgs e)
+	{
+		if (e.Value == null)
+			return;
+
+		if (!int.TryParse(e.Value.ToString(), out int result))
+			return;
+
+		var day = days.FirstOrDefault(d => d.DayNumber == result);
+		if (day == null)
+			return;
+		ResetPuzzle();
+		selectedDay = day;
+		await GetFilesForDay(day);
+	}
+
+	private void OnInputChanged(ChangeEventArgs e)
+	{
+		if (e.Value == null)
+			return;
+
+		selectedFile = e.Value.ToString() ?? string.Empty;
+		ResetInput();
+	}
+
+	private void ResetPuzzle()
+	{
+		selectedDay = null;
+		selectedFile = string.Empty;
+		files.Clear();
+		ResetInput();
+	}
+
+	private void ResetInput()
+	{
+		loading = false;
+		loadedInput = null;
+		ResetSolution();
+	}
+
+	private void ResetSolution()
+	{
+		executing = false;
+		solutionPartOne = resetString;
+		solutionPartTwo = resetString;
+		solutionTime = resetString;
+	}
+
+	private async Task RunPuzzle(MouseEventArgs e)
+	{
+		if (loadedInput == null || selectedDay == null)
+			return;
+
+		DayBase day = selectedDay;
+
+		executing = true;
+		var sw = new System.Diagnostics.Stopwatch();
+		sw.Start();
+		solutionPartOne = (await day.SolvePartOne(loadedInput)).ToString() ?? "ERROR";
+		solutionPartTwo = (await day.SolvePartTwo(loadedInput)).ToString() ?? "ERROR";
+		solutionTime = sw.ElapsedMilliseconds.ToString();
+		executing = false;
+
+	}
+	private async Task LoadInputFile(MouseEventArgs e)
+	{
+		if (selectedDay == null || selectedFile == null)
+			return;
+
+		var fileUrl = files[selectedFile];
+		if (fileUrl == null)
+		{
+			Console.WriteLine("fileUrl is null");
+			return;
+		};
+		Console.WriteLine(fileUrl);
+		loading = true;
+		var response = await Http.GetStringAsync(fileUrl);
+		loadedInput = response.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s));
+		loading = false;
+		/*for(int i = 0; i < loadedInput.Count(); i++)
+			Console.WriteLine($"[{i}]: {loadedInput.ElementAt(i)}");*/
+
+	}
 }
