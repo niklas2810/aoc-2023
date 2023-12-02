@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Prompt User": {
+    "Interactive": {
       "commandName": "Project"
     },
     "Example Day": {
