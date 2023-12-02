@@ -1,15 +1,15 @@
-﻿namespace AOC2023.Days;
+﻿using AOC2023.Contracts;
 
-public class Day02 : IDay<IEnumerable<Game>, int>
+namespace AOC2023.Days;
+
+public class Day02 : DayBase<IEnumerable<Game>, int>
 {
-    public string Name => "Cube Conundrum";
+    public override string Name => "Cube Conundrum";
 
-    public int DayNumber => 2;
 
-    public IEnumerable<Game> GenerateInput(params object[] args)
+    public override IEnumerable<Game> GenerateInput(params object[] args)
     {
-        var file = (args.Length > 0 && args[0] is string p) ? p : @"Inputs\02\input.txt";
-        var lines =  File.ReadLines(file);
+        var lines = (args.Length > 0 && args[0] is string p) ? this.ReadFile(p) : this.ReadFile();
         return lines.Select(ParseGame);
     }
 
@@ -47,7 +47,7 @@ public class Day02 : IDay<IEnumerable<Game>, int>
         return result;
     }
 
-    public int SolvePartOne(IEnumerable<Game> input)
+    public override int SolvePartOne(IEnumerable<Game> input)
     {
         const int MaxRed = 12;
         const int MaxGreen = 13;
@@ -57,7 +57,7 @@ public class Day02 : IDay<IEnumerable<Game>, int>
     }
 
 
-    public int SolvePartTwo(IEnumerable<Game> input)
+    public override int SolvePartTwo(IEnumerable<Game> input)
     {
         return input.Sum(game => game.MaxRed * game.MaxGreen * game.MaxBlue);
     }

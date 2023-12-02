@@ -1,10 +1,11 @@
 ﻿using System.Text;
+using AOC2023.Contracts;
 
 namespace AOC2023.Days;
 
-public class Day01 : IDay<IEnumerable<string>, int>
+public class Day01 : DayBase<IEnumerable<string>, int>
 {
-    public string Name => "Trebuchet?!";
+    public override string Name => "Trebuchet?!";
 
     // Dictionary of digit names (e.g. "one", "two", etc.) and their values as chars
     private static readonly Dictionary<string, char> DigitNames = new()
@@ -21,14 +22,12 @@ public class Day01 : IDay<IEnumerable<string>, int>
         ["nine"] = '9'
     };
 
-    public int DayNumber => 1;
-    public IEnumerable<string> GenerateInput(params object[] args)
+    public override IEnumerable<string> GenerateInput(params object[] args)
     {
-        var file = (args.Length > 0 && args[0] is string p) ? p : @"Inputs\01\input.txt";
-        return File.ReadLines(file);
+        return (args.Length > 0 && args[0] is string p) ? this.ReadFile(p) : this.ReadFile();
     }
 
-    public int SolvePartOne(IEnumerable<string> input)
+    public override int SolvePartOne(IEnumerable<string> input)
     {
         var sums = new List<int>();
         foreach (var line in input)
@@ -40,7 +39,7 @@ public class Day01 : IDay<IEnumerable<string>, int>
         return sums.Sum();
     }
 
-    public int SolvePartTwo(IEnumerable<string> input)
+    public override int SolvePartTwo(IEnumerable<string> input)
     {
         var sums = new List<int>();
         foreach (var line in input)
@@ -54,7 +53,7 @@ public class Day01 : IDay<IEnumerable<string>, int>
         return sums.Sum();
     }
 
-    private string Convert(string line)
+    private static string Convert(string line)
     {
         // Build new line, keeping digits and replacing written numbers (e.g. "one") with digits
         var newLine = new StringBuilder();
