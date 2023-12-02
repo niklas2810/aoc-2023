@@ -35,7 +35,7 @@ jobs:
           run: dotnet restore
         - name: Build 
           run: dotnet publish AOC2023.WebApp --no-restore -c Release -o deploy --nologo 
-        - name: Deploy
+        - name: Upload web application
           uses: actions/upload-pages-artifact@v2
           with:
             path: "deploy/wwwroot" 
