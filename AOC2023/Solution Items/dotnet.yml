@@ -46,8 +46,9 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: List files
+      run: ls -lah
     - name: Execute
-      # Run project AOC2023 with command line parameter of matrix
-      run: cd AOC2023 && dotnet run -- ${{ matrix.day }}
+      run: cd AOC2023 && dotnet run --no-build -- ${{ matrix.day }}
 
     
