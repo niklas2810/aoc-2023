@@ -62,7 +62,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build 
-      run: dotnet publish AOC2023.WebApp --no-restore -C release -o deploy --nologo 
+      run: dotnet publish AOC2023.WebApp --no-restore -c Release -o deploy --nologo 
     - name: Deploy
       uses: actions/upload-pages-artifact@v2
       with:
