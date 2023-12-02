@@ -66,7 +66,7 @@ jobs:
         name: linux-build
         path: .
     - name: Extract build
-      run: tar -xzvf linux-build.tar.gz -C runtime
+      run: mkdir runtime && tar -xzvf linux-build.tar.gz -C runtime
     - name: List artifact content
       run: ls -Rlah runtime
     - name: Execute
