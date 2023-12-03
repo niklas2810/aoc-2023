@@ -4,12 +4,6 @@ public class Day02 : DayBase
 {
     public override string Name => "Cube Conundrum";
 
-
-    public override IEnumerable<string> GenerateInput(params object[] args)
-    {
-        return args.Length > 0 && args[0] is string p ? ReadFile(p) : ReadFile();
-    }
-
     public IEnumerable<Game> ParseInput(IEnumerable<string> input)
     {
         return input.Select(ParseGame);

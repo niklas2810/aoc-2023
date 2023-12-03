@@ -21,11 +21,6 @@ public class Day01 : DayBase
         ["nine"] = '9'
     };
 
-    public override IEnumerable<string> GenerateInput(params object[] args)
-    {
-        return args.Length > 0 && args[0] is string p ? ReadFile(p) : ReadFile();
-    }
-
     public override Task<long> SolvePartOne(IEnumerable<string> input)
     {
         var sums = new List<long>();
