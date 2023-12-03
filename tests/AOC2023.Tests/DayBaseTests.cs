@@ -32,11 +32,6 @@ namespace AOC2023.Tests
     {
         public override string Name => "Dummy";
 
-        public override IEnumerable<string> GenerateInput(params object[] args)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Task<long> SolvePartOne(IEnumerable<string> input)
         {
             throw new NotImplementedException();
