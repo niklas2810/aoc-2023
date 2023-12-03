@@ -23,7 +23,7 @@
 			<option disabled selected="true" value="">---</option>
 			@foreach (var day in days)
 			{
-									<option value="@day.DayNumber">Day @day.DayNumber: @day.Name</option>
+				<option value="@day.DayNumber">Day @day.DayNumber: @day.Name</option>
 			}
 		</select>
 	</article>
@@ -33,14 +33,26 @@
 	<article>
 		<h5>Selected Input</h5>
 		<p>You have to select a puzzle first.</p>
-		<select @onchange="OnInputChanged">
-			<option disabled selected="true" value="@string.Empty">---</option>
-			@foreach (var file in files)
-			{
-									<option value="@file.Key">@file.Key</option>
-			}
-		</select>
-		<button disabled="@string.IsNullOrWhiteSpace(selectedFile)" aria-busy="@ShowLoading" @onclick="LoadInputFile">Load File</button>
+
+		<div class="grid">
+			<div>
+				<p>From GitHub</p>
+				<select @onchange="OnInputChanged">
+					<option selected="true" value="@string.Empty">---</option>
+					@foreach (var file in files)
+					{
+						<option value="@file.Key">@file.Key</option>
+					}
+				</select>
+			</div>
+			<div>
+				<p>Paste it here</p>
+				<InputTextArea @bind-Value="rawInputData" rows="1" class="resize-none" disabled="@(!CanUsePasteBox)"></InputTextArea>
+			</div>
+		</div>
+		<button disabled="@(!CanUseLoadButton)" aria-busy="@ShowLoading" @onclick="LoadInput">@LoadText</button>
+
+		
 		<p>Status: @InputStatusMessage</p>
 	</article>
 
@@ -53,7 +65,7 @@
 		<p>Part  Two: @solutionPartTwo</p>
 		<p>Exec Time: @solutionTime ms</p>
 
-		<button disabled="@DisableSolveButton" aria-busy="@ShowExecuting" @onclick="RunPuzzle">Run Solution</button>
+		<button disabled="@(!CanUseRunButton)" aria-busy="@ShowExecuting" @onclick="RunPuzzle">Run Solution</button>
 	</article>
 </section>
 
@@ -70,9 +82,23 @@
 	string ShowExecuting => executing.ToString().ToLowerInvariant();
 
 	DayBase? selectedDay = null;
-	string selectedFile = string.Empty;
 
+	string selectedFile = string.Empty;
+	string rawInputData = string.Empty;
 	IEnumerable<string>? loadedInput = null;
+	bool CanUsePasteBox => selectedDay != null && string.IsNullOrWhiteSpace(selectedFile);
+	string LoadText
+	{
+		get
+		{
+			if(!string.IsNullOrWhiteSpace(selectedFile))
+				return "Load from GitHub";
+			if (!string.IsNullOrWhiteSpace(rawInputData))
+				return "Load pasted input";
+			return "Select a file or paste input";
+		}
+	}
+	bool CanUseLoadButton => !string.IsNullOrWhiteSpace(selectedFile) || !string.IsNullOrWhiteSpace(rawInputData);
 
 	string solutionPartOne = resetString;
 	string solutionPartTwo = resetString;
@@ -81,17 +107,19 @@
 	private List<DayBase> days = DayRegistry.GetDays().ToList();
 	private Dictionary<string, string> files = new Dictionary<string, string>();
 
-	private bool DisableSolveButton => string.IsNullOrWhiteSpace(selectedFile) || loadedInput == null || loadedInput.Count() == 0;
+	private bool CanUseRunButton => selectedDay != null && loadedInput != null && loadedInput.Count() > 0;
 
 	private string InputStatusMessage
 	{
 		get
 		{
-			if (string.IsNullOrWhiteSpace(selectedFile))
-				return "No file selected";
-			if (loadedInput == null || loadedInput.Count() == 0)
-				return "Not loaded";
-			return $"Loaded {loadedInput.Count()} lines";
+			if (loadedInput != null && loadedInput.Count() > 0)
+				return $"Loaded {loadedInput.Count()} lines";
+			if(!string.IsNullOrWhiteSpace(selectedFile))
+				return "File not loaded yet";
+			if(!string.IsNullOrWhiteSpace(rawInputData))
+				return "Pasted text not loaded yet";
+			return "Select a file or paste input";
 		}
 	}
 
@@ -101,21 +129,27 @@
 		Console.WriteLine("getting files");
 		var folderUrl = $"{baseUrl}/{day.DayNumber:00}";
 
-		var response = await Http.GetStringAsync(folderUrl);
-		// Parse response as JSON as generic object using System.Text.Json
-		var data = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(response);
-		if (data == null)
+		try
 		{
-			Console.WriteLine("data is null");
-			return;
-		}
+			var response = await Http.GetStringAsync(folderUrl);
+			// Parse response as JSON as generic object using System.Text.Json
+			var data = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(response);
+			if (data == null)
+			{
+				Console.WriteLine("data is null");
+				return;
+			}
 
-		foreach (var entry in data)
+			foreach (var entry in data)
+			{
+				if (entry.ContainsKey("name") && entry.ContainsKey("download_url"))
+					files.Add(entry["name"].ToString() ?? "INVALID", entry["download_url"].ToString() ?? "INVALID");
+			}
+			Console.WriteLine($"Current puzzle has {files.Count} files on GitHub!");
+		} catch (Exception e)
 		{
-			if (entry.ContainsKey("name") && entry.ContainsKey("download_url"))
-				files.Add(entry["name"].ToString() ?? "INVALID", entry["download_url"].ToString() ?? "INVALID");
+			Console.WriteLine(e.Message);
 		}
-		Console.WriteLine($"Current puzzle has {files.Count} files on GitHub!");
 		loading = false;
 	}
 
@@ -183,11 +217,23 @@
 		executing = false;
 
 	}
-	private async Task LoadInputFile(MouseEventArgs e)
+	private async Task LoadInput(MouseEventArgs e)
 	{
-		if (selectedDay == null || selectedFile == null)
+		if (selectedDay == null)
 			return;
 
+		loading = true;
+		if (!string.IsNullOrEmpty(selectedFile))
+			await LoadInputFromFile();
+		else
+			LoadInputFromPasteBox();
+		loading = false;
+		
+
+	}
+
+	private async Task LoadInputFromFile()
+	{
 		var fileUrl = files[selectedFile];
 		if (fileUrl == null)
 		{
@@ -195,12 +241,17 @@
 			return;
 		};
 		Console.WriteLine(fileUrl);
-		loading = true;
+		
 		var response = await Http.GetStringAsync(fileUrl);
 		loadedInput = response.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s));
-		loading = false;
 		/*for(int i = 0; i < loadedInput.Count(); i++)
 			Console.WriteLine($"[{i}]: {loadedInput.ElementAt(i)}");*/
+	}
 
+	private void LoadInputFromPasteBox()
+	{
+		loadedInput = rawInputData.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s));
+		/*for (int i = 0; i < loadedInput.Count(); i++)
+			Console.WriteLine($"[{i}]: {loadedInput.ElementAt(i)}");*/
 	}
 }
