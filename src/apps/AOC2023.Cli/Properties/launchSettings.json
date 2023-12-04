@@ -5,7 +5,7 @@
     },
     "Example Day": {
       "commandName": "Project",
-      "commandLineArgs": "3"
+      "commandLineArgs": "4"
     },
     "Execute All": {
       "commandName": "Project",
