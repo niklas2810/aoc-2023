@@ -8,13 +8,44 @@
 </hgroup>
 
 
-<p>This is still a work in progress. Check back later for more information.</p>
+<article>
+	<h3><i class="ti ti-info-hexagon"></i> Information</h3>
+	<p>If you want to check out my in-browser solutions, select <NavLink href="executor">"Web Executor"</NavLink> in the navigation panel.</p>
+</article>
 
-<h3>Libraries</h3>
 
-<p>This project was made possible by utilizing several different open source projects:</p>
-
+<p>This repository contains my solutions for this years Advent of Code. I already participated a few times:</p>
 <ul>
-	<li><a href="https://github.com/tabler/tabler-icons" target="_blank">Tabler Icons (MIT)</a></li>
-	<li><a href="https://github.com/picocss/pico" target="_blank">Pico CSS (MIT)</a></li>
+	<li>2022 - C#</li>
+	<li>2021 - Python</li>
+	<li>2020 - Java & C++</li>
+	<li>2019 - Java</li>
 </ul>
+
+<h3>My approach this year</h3>
+
+<p>I'll be using C# again, because I don't like last years project setup in retrospect and wanted to tinker with some things! And as always, I don't pressure myself to finish all days! I'll complete the puzzles as long as I'm having fun and can afford to spend the time between this, my actual work and other responsibilities in my life 😄</p>
+
+<h4>C# to Web Application</h4>
+<p><a target="_blank" href="https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-8.0#blazor-webassembly">Blazor WebAssembly</a> is an awesome C# project, which allows me to run my solutions both as a command line interface (CLI) and a web application 🥳 It is deployed on each commit and available on <a target="_blank" href="https://aoc2023.niklasarndt.com">aoc2023.niklasarndt.com</a>.</p>
+
+<h4>Ahead-of-Time (AOT) compilation to native binary</h4>
+<p>C# works similarly to Java, because both languages require a special runtime to be able to execute the compiled code. Since I'm using .NET 8, I really wanted to try out an option to compile the binary to native code, where the required runtime is included in the binary itself (see <a target="_blank" href="https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/?tabs=net8plus%2Cwindows">Microsoft Docs</a>). This has some downsides, e.g. I couldn't get Reflection to work, because types are stripped when AOT-compiling.</p>
+<p>I actively decided against AOT-compilation for the web app, even though it might improve performance a bit. The reason for this is that the application deployed would get a lot bigger, resulting in longer load times.</p>
+
+<h4>Unit Testing / GitHub Actions</h4>
+<p>I also just wanted to play around with MSTest a bit, which doesn't mean I'm targeting some code coverage percentage or something :) Just a few experiments, and I'm especially interested in how to setup the GitHub Actions to run the test automatically. Also, I modernized the GitHub Pages deployment I've been using in past projects to use the latest standard.</p>
+
+<h3>AI Disclaimer</h3>
+<p>I've started using <a target="_blank" href="https://github.com/features/copilot">GitHub Copilot</a> a few weeks ago and am also using it for this project. This means that if you see some comments where I simply copy-pasted an example line or something, it was probably to give Copilot a hint for what I want to do.</p>
+<p>I still write 90% of the code myself though (and check the other 10% of course)! For me it's basically a really good autocomplete, it's literally mind-blowing how fast Copilot picks up what you want to do.</p>
+
+<h3>License</h3>
+
+<p>This code is published under MIT License, so feel free to use it as you please (a reference to the source is by license required per-se, but I don't really care)!</p>
+<p>In the same manner, here are some of the projects I'm using:</p>
+<ul>
+	<li><a target="_blank" href="https://github.com/tabler/tabler-icons">Tabler Icons</a></li>
+	<li><a target="_blank" href="https://github.com/picocss/pico">Pico CSS</a></li>
+</ul>
+<p>Because for the love of god, I'm lost when it comes to Web Design 😅</p>
