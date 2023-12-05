@@ -102,7 +102,7 @@ namespace AOC2023.Logic.Days
 				else if (line.Contains(" map:"))
 				{
 					if (currentMap != null)
-						throw new Exception("Invalid map definition");
+						throw new Exception("Invalid map definition: redefining map, but no separator was found");
 
 					var srcName = line.Substring(0, line.IndexOf("-"));
 					var destName = line.Split(' ')[0].Substring(line.LastIndexOf("-") + 1);
@@ -114,7 +114,7 @@ namespace AOC2023.Logic.Days
 					{
 						if (maps.Count == 0)
 							continue;
-						throw new Exception("Invalid map definition");
+						throw new Exception("Invalid map definition: Separator found, but no map set");
 					}
 						
 					maps.Add(currentMap);
@@ -123,7 +123,7 @@ namespace AOC2023.Logic.Days
 				else if (line.Split(' ').Length == 3)
 				{
 					if (currentMap == null)
-						throw new Exception("Invalid map definition");
+						throw new Exception("Invalid map definition: Mapping is invalidd");
 
 					var parts = line.Split(' ');
 					var valueStart = long.Parse(parts[0]);
@@ -134,12 +134,11 @@ namespace AOC2023.Logic.Days
 				}
 				else
 				{
-					throw new ArgumentException($"Invalid map definition: {line}");
+					throw new ArgumentException($"Invalid map definition: Unknown line {line}");
 				}
 			}
-			if(currentMap == null)
-				throw new Exception("Invalid map definition");
-			maps.Add(currentMap);
+			if(currentMap != null)
+				maps.Add(currentMap);
 
 			return new FullMap { Seeds = seeds, Maps = maps };
 		}

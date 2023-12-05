@@ -243,14 +243,14 @@
 		Console.WriteLine(fileUrl);
 		
 		var response = await Http.GetStringAsync(fileUrl);
-		loadedInput = response.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s));
+		loadedInput = response.Trim().Split("\n");
 		/*for(int i = 0; i < loadedInput.Count(); i++)
 			Console.WriteLine($"[{i}]: {loadedInput.ElementAt(i)}");*/
 	}
 
 	private void LoadInputFromPasteBox()
 	{
-		loadedInput = rawInputData.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s));
+		loadedInput = rawInputData.Trim().Split("\n");
 		/*for (int i = 0; i < loadedInput.Count(); i++)
 			Console.WriteLine($"[{i}]: {loadedInput.ElementAt(i)}");*/
 	}
