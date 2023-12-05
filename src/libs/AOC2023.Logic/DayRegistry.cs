@@ -6,6 +6,6 @@ public static class DayRegistry
 {
     public static IEnumerable<DayBase> GetDays()
     {
-        return new List<DayBase> { new Day01(), new Day02(), new Day03(), new Day04() };
+        return new List<DayBase> { new Day01(), new Day02(), new Day03(), new Day04(), new Day05() };
     }
 }
