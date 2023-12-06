@@ -40,11 +40,18 @@
     <None Update="Inputs\05\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Inputs\06\example.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Inputs\06\input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Inputs\03\" />
     <Folder Include="Inputs\05\" />
+    <Folder Include="Inputs\06\" />
   </ItemGroup>
 
 </Project>
