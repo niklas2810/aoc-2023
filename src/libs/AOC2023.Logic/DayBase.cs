@@ -36,4 +36,27 @@ public abstract class DayBase : IDay<IEnumerable<string>, long>
 
 	public abstract Task<long> SolvePartOne(IEnumerable<string> input);
 	public abstract Task<long> SolvePartTwo(IEnumerable<string> input);
+
+	public async Task<string> SolvePartOneSafe(IEnumerable<string> input)
+	{
+		try
+		{
+			return await SolvePartOne(input).ContinueWith(t => t.Result.ToString());
+		} catch(Exception e)
+		{
+			return $"{e.GetType().Name}: {e.Message}";
+		}
+	}
+
+	public async Task<string> SolvePartTwoSafe(IEnumerable<string> input)
+	{
+		try
+		{
+			return await SolvePartTwo(input).ContinueWith(t => t.Result.ToString());
+		}
+		catch (Exception e)
+		{
+			return $"{e.GetType().Name}: {e.Message}";
+		}
+	}
 }

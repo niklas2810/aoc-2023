@@ -211,8 +211,8 @@
 		executing = true;
 		var sw = new System.Diagnostics.Stopwatch();
 		sw.Start();
-		solutionPartOne = (await day.SolvePartOne(loadedInput)).ToString() ?? "ERROR";
-		solutionPartTwo = (await day.SolvePartTwo(loadedInput)).ToString() ?? "ERROR";
+		solutionPartOne = (await day.SolvePartOneSafe(loadedInput)).ToString();
+		solutionPartTwo = (await day.SolvePartTwoSafe(loadedInput)).ToString();
 		solutionTime = sw.ElapsedMilliseconds.ToString();
 		executing = false;
 

@@ -58,14 +58,14 @@ async Task ExecuteDay(DayBase selected, string filename = "input.txt")
     }
     var sw1 = new Stopwatch();
     sw1.Start();
-    long partOne = await selected.SolvePartOne(input);
+    var partOne = await selected.SolvePartOneSafe(input);
     sw1.Stop();
-    var sw2 = new Stopwatch();
-    sw2.Start();
-    long partTwo = await selected.SolvePartTwo(input);
-    sw2.Stop();
+	Console.WriteLine($"PART   ONE: {partOne} [{sw1.Elapsed.TotalMilliseconds:00.00}ms]");
 
-    Console.WriteLine($"PART   ONE: {partOne} [{sw1.Elapsed.TotalMilliseconds:00.00}ms]");
+	var sw2 = new Stopwatch();
+    sw2.Start();
+    var partTwo = await selected.SolvePartTwoSafe(input);
+    sw2.Stop();
     Console.WriteLine($"PART   TWO: {partTwo} [{sw2.Elapsed.TotalMilliseconds:00.00}ms]");
 
     // Write elapsed milliseconds with 2 digits precision based on sw.Elapsed.TotalNanoseconds
