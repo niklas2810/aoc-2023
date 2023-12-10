@@ -67,12 +67,16 @@
     <None Update="Inputs\09\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Inputs\10\input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Inputs\03\" />
     <Folder Include="Inputs\05\" />
     <Folder Include="Inputs\06\" />
+    <Folder Include="Inputs\10\" />
   </ItemGroup>
 
 </Project>
